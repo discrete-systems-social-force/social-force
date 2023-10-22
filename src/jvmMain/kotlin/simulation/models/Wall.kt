@@ -1,4 +1,4 @@
-package models
+package simulation.models
 
 class Wall {
    var start = Vector()

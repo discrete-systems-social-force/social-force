@@ -1,3 +1,5 @@
 package simulation.dto
 
-data class Human()
+import simulation.models.Vector
+
+data class Human(val id:Int, val position: Vector)

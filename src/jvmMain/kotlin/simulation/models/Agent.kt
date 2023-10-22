@@ -1,4 +1,4 @@
-package models
+package simulation.models
 
 class Agent {
     var mass: Float = 0f
@@ -11,9 +11,9 @@ class Agent {
     var relaxationTime: Float = 0f
 
     var visionCenter: Float = 0f
-    var destination = Vector()
-    var position = Vector()
-    var next = Vector()
+    var destination = Vector(0f, 0f)
+    var position = Vector(0f, 0f)
+    var next = Vector(0f, 0f)
     var angle: Float = 0f
     var speed: Float = 0f
     var acceleration: Float = 0f

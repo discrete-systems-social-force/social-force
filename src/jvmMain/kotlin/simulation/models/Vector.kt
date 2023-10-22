@@ -1,6 +1,6 @@
-package models
+package simulation.models
 
-class Vector {
-    var x: Float = 0f
-    var y: Float = 0f
-}
+data class Vector(
+    val x: Float,
+    val y: Float
+)
