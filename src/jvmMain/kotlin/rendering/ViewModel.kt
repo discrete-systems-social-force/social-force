@@ -1,0 +1,5 @@
+package rendering
+
+class ViewModel {
+
+}
