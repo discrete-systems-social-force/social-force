@@ -24,4 +24,13 @@ jobs:
       - name: Build with Gradle
         uses: gradle/gradle-build-action@bd5760595778326ba7f1441bcf7e88b49de61a25 # v2.6.0
         with:
-          arguments: package
+          arguments: packageDeb packageDmg packageMsi
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: executable-deb
+          path: |
+            build/compose/binaries/main/deb
+            build/compose/binaries/main/dmg
+            build/compose/binaries/main/msi
+      
