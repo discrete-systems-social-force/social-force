@@ -80,19 +80,3 @@ fun main() {
 
     DIModule.appScope.cancel()
 }
-
-//@OptIn(InternalCoroutinesApi::class)
-//fun main() {
-//    val agent = Agent()
-//    agent.destination = Vector(15f, 3f)
-//    agent.position = Vector(0f, 0f)
-//    agent.speed = 2f
-//    val agents = listOf(
-//        agent
-//    )
-//    val engine = Engine(agents, listOf(), 1)
-//    engine.start()
-//    runBlocking {
-//        engine.humans().toList()
-//    }
-//}

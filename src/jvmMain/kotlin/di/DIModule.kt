@@ -21,15 +21,15 @@ object DIModule {
 
     fun provideEngine(): IEngine {
         val agent = Agent().apply {
-            destination = Vector(15f, 3f)
+            destination = Vector(100f, 100f)
             position = Vector(0f, 0f)
-            speed = 2f
+            speed = 1f
         }
 
         val agents = listOf(
             agent
         )
-        return Engine(agents, listOf(), 1)
+        return Engine(agents, listOf(), 30)
     }
 
     val appScope = CoroutineScope(SupervisorJob())
