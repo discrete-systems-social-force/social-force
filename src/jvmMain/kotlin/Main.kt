@@ -12,8 +12,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Window
-import androidx.compose.ui.window.application
+import kotlinx.coroutines.InternalCoroutinesApi
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.toList
+import kotlinx.coroutines.runBlocking
+import simulation.Engine
+import simulation.models.Agent
+import simulation.models.Vector
 
 @Composable
 @Preview
@@ -44,8 +49,24 @@ fun App() {
     }
 }
 
-fun main() = application {
-    Window(onCloseRequest = ::exitApplication) {
-        App()
+//fun main() = application {
+//    Window(onCloseRequest = ::exitApplication) {
+//        App()
+//    }
+//}
+
+@OptIn(InternalCoroutinesApi::class)
+fun main() {
+    val agent = Agent()
+    agent.destination = Vector(15f, 3f)
+    agent.position = Vector(0f, 0f)
+    agent.speed = 2f
+    val agents = listOf(
+        agent
+    )
+    val engine = Engine(agents, listOf(), 1)
+    engine.start()
+    runBlocking {
+        engine.humans().toList()
     }
 }
