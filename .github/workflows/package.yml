@@ -11,7 +11,10 @@ permissions:
 
 jobs:
   package:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, windows-latest, macos-latest ]
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
       - name: Set up JDK
@@ -28,9 +31,10 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
-          name: executable-deb
+          name: executables
           path: |
             build/compose/binaries/main/deb
             build/compose/binaries/main/dmg
             build/compose/binaries/main/msi
+            build/compose/binaries/main/exe
       
