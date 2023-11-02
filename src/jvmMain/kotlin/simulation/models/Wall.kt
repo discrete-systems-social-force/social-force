@@ -1,7 +1,5 @@
 package simulation.models
 
-class Wall {
-   var start = Vector()
-   var end = Vector()
-   var thickness: Float = 0f
+data class Wall(val start: Vector, val end: Vector) {
+    var thickness: Float = 0f
 }
