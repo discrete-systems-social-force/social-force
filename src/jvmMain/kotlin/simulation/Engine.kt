@@ -30,7 +30,15 @@ class Engine(private val agents: List<Agent>, override val walls: List<Wall>, pr
             while (true) {
                 if (running) {
                     step()
-                    emit(agents.map { Human(it.id, it.position) })
+                    emit(
+                        agents.map {
+                            Human(
+                                id = it.id,
+                                position = it.position,
+                                radius = 3f,
+                            )
+                        }
+                    )
                 }
                 delay((1000 / fps).milliseconds)
             }
