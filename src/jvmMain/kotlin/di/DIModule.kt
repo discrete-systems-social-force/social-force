@@ -30,9 +30,10 @@ object DIModule {
         val agents = listOf(
             agent
         )
-        val walls = listOf(
-            Wall(Vector(50f, 0f), Vector(50f, 90f)),
-        )
+        val walls =
+            (10..30).map {  Wall(x = 10, y = it) } +
+            (50..60).map { Wall(x = 60, y = it) } +
+            (50..60).map { Wall(x = it, y = 70) }
         return Engine(agents, walls, 30)
     }
 

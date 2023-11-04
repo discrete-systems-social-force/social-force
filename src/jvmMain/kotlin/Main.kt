@@ -24,6 +24,7 @@ import di.DIModule
 import kotlinx.coroutines.cancel
 import rendering.AppState
 import rendering.IViewModel
+import simulation.models.Vector
 
 @Composable
 @Preview
@@ -63,6 +64,17 @@ fun App(
                         )
                     }
 
+                    state.walls.forEach { wall ->
+                        drawRect(
+                            color = Color.Red,
+                            topLeft = Offset(x = wall.x.toFloat(), y = wall.y.toFloat()),
+                            size = Size(
+                                width = 1f,
+                                height = 1f,
+                            ),
+                        )
+                    }
+
                     humanPoints.forEach { (position, radius) ->
                         drawCircle(
                             center = position,
@@ -85,6 +97,8 @@ fun App(
 
     }
 }
+
+private fun Vector.toOffset(): Offset = Offset(x = x, y = y)
 
 fun main() {
     val viewModel: IViewModel = DIModule.provideViewModel()
