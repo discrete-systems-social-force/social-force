@@ -8,6 +8,7 @@ import simulation.Engine
 import simulation.IEngine
 import simulation.models.Agent
 import simulation.models.Vector
+import simulation.models.Wall
 
 object DIModule {
 
@@ -29,7 +30,10 @@ object DIModule {
         val agents = listOf(
             agent
         )
-        return Engine(agents, listOf(), 30)
+        val walls = listOf(
+            Wall(Vector(50f, 0f), Vector(50f, 90f)),
+        )
+        return Engine(agents, walls, 30)
     }
 
     val appScope = CoroutineScope(SupervisorJob())

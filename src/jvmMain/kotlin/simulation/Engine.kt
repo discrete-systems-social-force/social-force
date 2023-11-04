@@ -7,6 +7,7 @@ import simulation.dto.Human
 import simulation.models.Agent
 import simulation.models.Vector
 import simulation.models.Wall
+import kotlin.math.atan2
 import kotlin.system.exitProcess
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
@@ -35,6 +36,7 @@ class Engine(private val agents: List<Agent>, override val walls: List<Wall>, pr
                             Human(
                                 id = it.id,
                                 position = it.position,
+                                force = it.force,
                                 radius = 3f,
                             )
                         }
@@ -59,15 +61,38 @@ class Engine(private val agents: List<Agent>, override val walls: List<Wall>, pr
             val obstacleForce = Vector(0f, 0f)
 
             // interaction force
+            // x = (agent1.getAgentRadius() + agent2.getAgentRadius() - distance) * scaleCoefficient
+            // y - calculateMutualAngle
+            // y = normalized atan2(agent2.x - agent1.x, agent2.y - agent1.y)
+            // y >= 0
             val interactionForce = Vector(0f, 0f)
 
             agent.force = destinationForce.add(obstacleForce).add(interactionForce)
             agent.position = agent.position.add(agent.force)
 
-
             println(agent)
 
 //            exitProcess(0)
+        }
+    }
+
+    fun calculateObstacleForce(agent: Agent): Vector {
+        val obstacleForce = Vector(0f, 0f)
+        walls.forEach { wall ->
+            obstacleForce.add(Vector(0f, 0f))
+        }
+        return obstacleForce
+    }
+
+    fun calculateMutualAngle(p1: Vector, p2: Vector): Float {
+        val angle = atan2(
+            p1.x - p2.x,
+            p1.y - p2.y
+        )
+        return if (angle >= 0) {
+            angle
+        } else {
+            (2 * Math.PI + angle).toFloat()
         }
     }
 
