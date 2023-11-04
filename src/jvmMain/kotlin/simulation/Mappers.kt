@@ -9,10 +9,9 @@ fun Agent.toHuman() = Human(
     id = id,
     position = position.toScenePosition(),
     force = force,
-    radius = 3f,
 )
 
 fun Vector.toScenePosition(): Vector = Vector(
     x = x.roundToInt().toFloat(),
-    y = y.roundToInt().toFloat(),
+    y = (Utils.SCENE_SIZE - y).roundToInt().toFloat(),
 )

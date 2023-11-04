@@ -42,7 +42,7 @@ fun App(
 
                 val humanPoints = state.humans.map { human ->
                     human.position.let {
-                        Offset(x = it.x, y = it.y) to human.radius
+                        Offset(x = it.x, y = it.y)
                     }
                 }
 
@@ -75,11 +75,14 @@ fun App(
                         )
                     }
 
-                    humanPoints.forEach { (position, radius) ->
-                        drawCircle(
-                            center = position,
+                    humanPoints.forEach { position ->
+                        drawRect(
+                            topLeft = position,
                             color = Color.Green,
-                            radius = radius,
+                            size = Size(
+                                width = 1f,
+                                height = 1f,
+                            ),
                         )
                     }
                 }

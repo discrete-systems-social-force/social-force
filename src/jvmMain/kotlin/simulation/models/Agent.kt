@@ -10,7 +10,6 @@ class Agent {
     var speed: Float = 5f
     var force: Vector = Vector(0f, 0f)
     var finished: Boolean = false
-    val radius: Float = 5f
 
     override fun toString(): String = "Agent(id=$id, destination=$destination, position=$position, force=$force)"
 }
