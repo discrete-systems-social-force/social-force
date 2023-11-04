@@ -1,5 +1,6 @@
 package rendering
 
+import Utils
 import di.DIModule
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -25,7 +26,7 @@ class ViewModel(
         human.copy(
             position = human.position.let {  position ->
                 position.copy(
-                    y = 500 - position.y,
+                    y = Utils.SCENE_SIZE - position.y,
                 )
             }
         )

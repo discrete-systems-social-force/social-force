@@ -1,4 +1,6 @@
 // Copyright 2000-2021 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
+import Utils.SCENE_BORDERS_WIDTH
+import Utils.SCENE_SIZE
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Column
@@ -34,7 +36,7 @@ fun App(
                 val maxHeight = size.height
                 val maxWidth = size.width
                 val minSquare = minOf(maxHeight, maxWidth)
-                val scale = minSquare/500f
+                val scale = minSquare / SCENE_SIZE
 
 
                 val humanPoints = state.humans.map { human ->
@@ -44,6 +46,23 @@ fun App(
                 }
 
                 scale(scaleX = scale, scaleY = scale, pivot = Offset.Zero) {
+                    (0..SCENE_SIZE).forEach {
+                        // Horizontal line
+                        drawLine(
+                            color = Color.LightGray,
+                            strokeWidth = SCENE_BORDERS_WIDTH,
+                            start = Offset(x = 0f, y = it.toFloat()),
+                            end = Offset(x = SCENE_SIZE.toFloat(), y = it.toFloat()),
+                        )
+                        // Vertical line
+                        drawLine(
+                            color = Color.LightGray,
+                            strokeWidth = SCENE_BORDERS_WIDTH,
+                            start = Offset(x = it.toFloat(), y = 0f),
+                            end = Offset(x = it.toFloat(), y = SCENE_SIZE.toFloat()),
+                        )
+                    }
+
                     humanPoints.forEach { (position, radius) ->
                         drawCircle(
                             center = position,
