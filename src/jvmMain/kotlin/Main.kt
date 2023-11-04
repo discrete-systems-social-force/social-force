@@ -67,7 +67,7 @@ fun App(
                     state.walls.forEach { wall ->
                         drawRect(
                             color = Color.Red,
-                            topLeft = Offset(x = wall.x.toFloat(), y = wall.y.toFloat()),
+                            topLeft = Offset(x = wall.position.x, y = SCENE_SIZE - wall.position.y),
                             size = Size(
                                 width = 1f,
                                 height = 1f,

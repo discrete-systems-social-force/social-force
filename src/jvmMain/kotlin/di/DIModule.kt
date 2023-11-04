@@ -20,20 +20,16 @@ object DIModule {
         )
     }
 
-    fun provideEngine(): IEngine {
-        val agent = Agent().apply {
-            destination = Vector(100f, 100f)
-            position = Vector(0f, 0f)
-            speed = 1f
-        }
-
+    private fun provideEngine(): IEngine {
         val agents = listOf(
-            agent
+            Agent().apply {
+                destination = Vector(50f, 80f)
+                position = Vector(0f, 0f)
+                speed = 0.5f
+            },
         )
         val walls =
-            (10..30).map {  Wall(x = 10, y = it) } +
-            (50..60).map { Wall(x = 60, y = it) } +
-            (50..60).map { Wall(x = it, y = 70) }
+            (5..40).map { Wall(position = Vector(x = it.toFloat(), y = 30f)) }
         return Engine(agents, walls, 30)
     }
 
