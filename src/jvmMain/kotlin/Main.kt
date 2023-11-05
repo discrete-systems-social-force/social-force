@@ -1,4 +1,6 @@
 // Copyright 2000-2021 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
+import Utils.SCENE_BORDERS_WIDTH
+import Utils.SCENE_SIZE
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Column
@@ -22,6 +24,7 @@ import di.DIModule
 import kotlinx.coroutines.cancel
 import rendering.AppState
 import rendering.IViewModel
+import simulation.models.Vector
 
 @Composable
 @Preview
@@ -34,21 +37,52 @@ fun App(
                 val maxHeight = size.height
                 val maxWidth = size.width
                 val minSquare = minOf(maxHeight, maxWidth)
-                val scale = minSquare/500f
+                val scale = minSquare / SCENE_SIZE
 
 
                 val humanPoints = state.humans.map { human ->
                     human.position.let {
-                        Offset(x = it.x, y = it.y) to human.radius
+                        Offset(x = it.x, y = it.y)
                     }
                 }
 
                 scale(scaleX = scale, scaleY = scale, pivot = Offset.Zero) {
-                    humanPoints.forEach { (position, radius) ->
-                        drawCircle(
-                            center = position,
+                    (0..SCENE_SIZE).forEach {
+
+                        drawLine(
+                            color = Color.LightGray,
+                            strokeWidth = SCENE_BORDERS_WIDTH,
+                            start = Offset(x = 0f, y = it.toFloat()),
+                            end = Offset(x = SCENE_SIZE.toFloat(), y = it.toFloat()),
+                        )
+
+                        drawLine(
+                            color = Color.LightGray,
+                            strokeWidth = SCENE_BORDERS_WIDTH,
+                            start = Offset(x = it.toFloat(), y = 0f),
+                            end = Offset(x = it.toFloat(), y = SCENE_SIZE.toFloat()),
+                        )
+                    }
+
+                    state.walls.forEach { wall ->
+                        drawRect(
+                            color = Color.Red,
+                            topLeft = Offset(x = wall.position.x, y = SCENE_SIZE - wall.position.y),
+                            size = Size(
+                                width = 1f,
+                                height = 1f,
+                            ),
+                        )
+                    }
+
+                    humanPoints.forEach { position ->
+                        drawRect(
+                            topLeft = position,
                             color = Color.Green,
-                            radius = radius,
+                            size = Size(
+                                width = 1f,
+                                height = 1f,
+                            ),
                         )
                     }
                 }
@@ -66,6 +100,8 @@ fun App(
 
     }
 }
+
+private fun Vector.toOffset(): Offset = Offset(x = x, y = y)
 
 fun main() {
     val viewModel: IViewModel = DIModule.provideViewModel()

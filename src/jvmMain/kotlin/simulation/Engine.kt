@@ -7,6 +7,10 @@ import simulation.dto.Human
 import simulation.models.Agent
 import simulation.models.Vector
 import simulation.models.Wall
+import kotlin.math.atan2
+import kotlin.math.cos
+import kotlin.math.exp
+import kotlin.math.sin
 import kotlin.system.exitProcess
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
@@ -30,15 +34,7 @@ class Engine(private val agents: List<Agent>, override val walls: List<Wall>, pr
             while (true) {
                 if (running) {
                     step()
-                    emit(
-                        agents.map {
-                            Human(
-                                id = it.id,
-                                position = it.position,
-                                radius = 3f,
-                            )
-                        }
-                    )
+                    emit(agents.map(Agent::toHuman))
                 }
                 delay((1000 / fps).milliseconds)
             }
@@ -56,19 +52,37 @@ class Engine(private val agents: List<Agent>, override val walls: List<Wall>, pr
             }
 
             // obstacle force
-            val obstacleForce = Vector(0f, 0f)
+            val obstacleForce = calculateObstacleForce(agent)
 
             // interaction force
+            // x = (agent1.getAgentRadius() + agent2.getAgentRadius() - distance) * scaleCoefficient
+            // y - calculateMutualAngle
+            // y = normalized atan2(agent2.x - agent1.x, agent2.y - agent1.y)
+            // y >= 0
             val interactionForce = Vector(0f, 0f)
 
             agent.force = destinationForce.add(obstacleForce).add(interactionForce)
             agent.position = agent.position.add(agent.force)
 
-
-            println(agent)
-
-//            exitProcess(0)
         }
     }
+
+    private fun calculateObstacleForce(agent: Agent): Vector {
+        var obstacleForce = Vector(0f, 0f)
+        walls.forEach { wall ->
+            val distance = wall.position.distance(agent.position)
+            val angle = atan2(wall.position.y - agent.position.y, wall.position.x - agent.position.x)
+            val coed = -exp(-distance / 2) / 10
+            val force = Vector(
+                x = distance * cos(angle.toDouble()).toFloat() * coed,
+                y = distance * sin(angle.toDouble()).toFloat() * coed,
+            )
+            if (force.x.isFinite() && force.y.isFinite()) {
+                obstacleForce = obstacleForce.add(force)
+            }
+        }
+        return obstacleForce
+    }
+
 
 }

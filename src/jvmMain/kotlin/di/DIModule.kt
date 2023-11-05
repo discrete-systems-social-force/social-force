@@ -8,6 +8,7 @@ import simulation.Engine
 import simulation.IEngine
 import simulation.models.Agent
 import simulation.models.Vector
+import simulation.models.Wall
 
 object DIModule {
 
@@ -19,17 +20,18 @@ object DIModule {
         )
     }
 
-    fun provideEngine(): IEngine {
-        val agent = Agent().apply {
-            destination = Vector(100f, 100f)
-            position = Vector(0f, 0f)
-            speed = 1f
-        }
-
+    private fun provideEngine(): IEngine {
         val agents = listOf(
-            agent
+            Agent().apply {
+                destination = Vector(50f, 80f)
+                position = Vector(0f, 0f)
+                speed = 0.5f
+            },
         )
-        return Engine(agents, listOf(), 30)
+        val walls =
+            (5..30).map { Wall(position = Vector(x = it.toFloat(), y = 30f)) } +
+                    (5..50).map { Wall(position = Vector(x = it.toFloat(), y = 50f)) }
+        return Engine(agents, walls, 30)
     }
 
     val appScope = CoroutineScope(SupervisorJob())

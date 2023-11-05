@@ -15,10 +15,11 @@ data class Vector(
 
     fun add(vector: Vector): Vector = Vector(x + vector.x, y + vector.y)
 
-
     fun subtract(vector: Vector): Vector = Vector(x - vector.x, y - vector.y)
 
     fun multiply(scalar: Float): Vector = Vector(x * scalar, y * scalar)
+
+    fun distance(vector: Vector): Float = subtract(vector).length()
 
     override fun toString(): String = "Vector(x=$x, y=$y)"
 }

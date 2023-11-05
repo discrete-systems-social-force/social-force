@@ -1,5 +1,6 @@
 package rendering
 
+import Utils
 import di.DIModule
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -21,23 +22,10 @@ class ViewModel(
         )
     )
 
-    private fun List<Human>.toDomain() = map {  human ->
-        human.copy(
-            position = human.position.let {  position ->
-                position.copy(
-                    y = 500 - position.y,
-                )
-            }
-        )
-    }
-
     init {
         viewModelScope.launch {
             engine.start()
             engine.humans()
-                .map { humans ->
-                    humans.toDomain()
-                }
                 .collect { newHumans ->
                 _state.update {
                     it.copy(
