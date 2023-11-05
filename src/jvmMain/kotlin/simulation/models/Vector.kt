@@ -21,5 +21,7 @@ data class Vector(
 
     fun distance(vector: Vector): Float = subtract(vector).length()
 
+    fun normal(): Vector = Vector(-y, x)
+
     override fun toString(): String = "Vector(x=$x, y=$y)"
 }

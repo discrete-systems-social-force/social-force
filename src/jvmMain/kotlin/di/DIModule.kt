@@ -22,9 +22,25 @@ object DIModule {
 
     private fun provideEngine(): IEngine {
         val agents = listOf(
+//            Agent().apply {
+//                destination = Vector(50f, 80f)
+//                position = Vector(0f, 0f)
+//                speed = 0.5f
+//            },
+//            Agent().apply {
+//                destination = Vector(50f, 82f)
+//                position = Vector(1f, 1f)
+//                speed = 0.5f
+//            },
+
             Agent().apply {
-                destination = Vector(50f, 80f)
-                position = Vector(0f, 0f)
+                destination = Vector(90f, 80f)
+                position = Vector(10f, 80f)
+                speed = 0.5f
+            },
+            Agent().apply {
+                destination = Vector(10f, 80f)
+                position = Vector(90f, 80f)
                 speed = 0.5f
             },
         )
