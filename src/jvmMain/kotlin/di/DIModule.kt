@@ -29,7 +29,8 @@ object DIModule {
             },
         )
         val walls =
-            (5..40).map { Wall(position = Vector(x = it.toFloat(), y = 30f)) }
+            (5..30).map { Wall(position = Vector(x = it.toFloat(), y = 30f)) }+
+            (5..50).map { Wall(position = Vector(x = it.toFloat(), y = 50f)) }
         return Engine(agents, walls, 30)
     }
 

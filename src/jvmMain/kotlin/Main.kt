@@ -48,14 +48,14 @@ fun App(
 
                 scale(scaleX = scale, scaleY = scale, pivot = Offset.Zero) {
                     (0..SCENE_SIZE).forEach {
-                        // Horizontal line
+
                         drawLine(
                             color = Color.LightGray,
                             strokeWidth = SCENE_BORDERS_WIDTH,
                             start = Offset(x = 0f, y = it.toFloat()),
                             end = Offset(x = SCENE_SIZE.toFloat(), y = it.toFloat()),
                         )
-                        // Vertical line
+
                         drawLine(
                             color = Color.LightGray,
                             strokeWidth = SCENE_BORDERS_WIDTH,
