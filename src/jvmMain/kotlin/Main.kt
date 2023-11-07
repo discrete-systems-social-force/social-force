@@ -39,7 +39,6 @@ fun App(
                 val minSquare = minOf(maxHeight, maxWidth)
                 val scale = minSquare / SCENE_SIZE
 
-
                 val humanPoints = state.humans.map { human ->
                     human.position.let {
                         Offset(x = it.x, y = it.y)
@@ -48,7 +47,6 @@ fun App(
 
                 scale(scaleX = scale, scaleY = scale, pivot = Offset.Zero) {
                     (0..SCENE_SIZE).forEach {
-
                         drawLine(
                             color = Color.LightGray,
                             strokeWidth = SCENE_BORDERS_WIDTH,
@@ -93,11 +91,10 @@ fun App(
                         width = minSquare,
                         height = minSquare,
                     ),
-                    style = Stroke(width = 1.0f)
+                    style = Stroke(width = 1.0f),
                 )
             }
         }
-
     }
 }
 
@@ -107,7 +104,6 @@ fun main() {
     val viewModel: IViewModel = DIModule.provideViewModel()
 
     application {
-
         Window(onCloseRequest = ::exitApplication) {
             val state by viewModel.state.collectAsState()
             App(state = state)
