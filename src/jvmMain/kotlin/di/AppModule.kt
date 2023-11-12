@@ -53,3 +53,5 @@ val appModule = DI.Module("App") {
         CoroutineScope(SupervisorJob())
     }
 }
+
+val di = DI.from(listOf(appModule))

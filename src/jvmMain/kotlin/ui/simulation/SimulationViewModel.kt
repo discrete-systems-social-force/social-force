@@ -1,6 +1,7 @@
 package ui.simulation
 
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -15,6 +16,7 @@ class SimulationViewModel(
     walls: List<Wall>,
 ) : ISimulationViewModel {
     private val viewModelScope = appScope
+    private val job: Job
 
     override val state: StateFlow<SimulationState>
         get() = _state.asStateFlow()
@@ -40,8 +42,12 @@ class SimulationViewModel(
         }
     }
 
+    override fun dispose() {
+        job.cancel()
+    }
+
     init {
-        viewModelScope.launch {
+        job = viewModelScope.launch {
             engine.start()
             engine.humans()
                 .collect { newHumans ->

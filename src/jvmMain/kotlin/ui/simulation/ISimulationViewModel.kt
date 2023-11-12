@@ -7,4 +7,6 @@ interface ISimulationViewModel : ScreenModel {
     val state: StateFlow<SimulationState>
 
     fun changeRunningState()
+
+    fun dispose()
 }

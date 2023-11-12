@@ -1,10 +1,7 @@
 package ui.simulation
 
 import androidx.compose.desktop.ui.tooling.preview.Preview
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -16,28 +13,37 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.kodein.rememberScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import di.di
+import org.kodein.di.instance
 import simulation.models.Wall
 import ui.utils.SceneCanvas
 import ui.utils.drawHumans
 import ui.utils.drawWalls
+import java.util.*
 
 data class SimulationScreen(
     val walls: List<Wall>,
+    private val uniqueKey: String = UUID.randomUUID().toString(),
 ) : Screen {
+
+    private val viewModel by di.instance<List<Wall>, ISimulationViewModel>(arg = walls)
 
     @Composable
     override fun Content() {
-        val viewModel = rememberScreenModel<List<Wall>, ISimulationViewModel>(arg = walls)
-        val state by viewModel.state.collectAsState()
         val navigator = LocalNavigator.currentOrThrow
+        val state by viewModel.state.collectAsState()
         SimulationPage(
             state = state,
             onChangeRunningState = viewModel::changeRunningState,
             onBackClick = {
+                viewModel.dispose()
                 navigator.pop()
+            },
+            onResetClick = {
+                viewModel.dispose()
+                navigator.replace(SimulationScreen(walls = walls))
             },
         )
     }
@@ -49,6 +55,7 @@ private fun SimulationPage(
     state: SimulationState,
     onChangeRunningState: () -> Unit,
     onBackClick: () -> Unit,
+    onResetClick: () -> Unit,
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(space = 8.dp),
@@ -66,22 +73,35 @@ private fun SimulationPage(
                 )
             }
 
-            Button(
-                onClick = onChangeRunningState,
-                colors = ButtonDefaults.buttonColors(
-                    backgroundColor = if (state.isRunning) {
-                        Color.Red
-                    } else {
-                        Color.Black
-                    },
-                    contentColor = Color.White,
-                ),
+            Row(
                 modifier = Modifier.align(Alignment.Center),
+                horizontalArrangement = Arrangement.spacedBy(space = 8.dp),
             ) {
-                if (state.isRunning) {
-                    Text(text = "Przerwij")
-                } else {
-                    Text("Wznów")
+                Button(
+                    onClick = onChangeRunningState,
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = if (state.isRunning) {
+                            Color.Red
+                        } else {
+                            Color.Magenta
+                        },
+                        contentColor = Color.White,
+                    ),
+                ) {
+                    if (state.isRunning) {
+                        Text(text = "Przerwij")
+                    } else {
+                        Text("Wznów")
+                    }
+                }
+                Button(
+                    onClick = onResetClick,
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = Color.Black,
+                        contentColor = Color.White,
+                    ),
+                ) {
+                    Text("Resetuj")
                 }
             }
         }
