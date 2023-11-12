@@ -1,12 +1,11 @@
 package ui.start
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.kodein.rememberScreenModel
@@ -33,6 +32,9 @@ class StartScreen : Screen {
             onNextClick = {
                 navigator.push(SimulationScreen(walls = state.walls))
             },
+            onClearWallsClick = {
+                viewModel.clearWalls()
+            },
         )
     }
 }
@@ -42,6 +44,7 @@ private fun StartPage(
     state: StartState,
     onNewFile: (String) -> Unit,
     onNextClick: () -> Unit,
+    onClearWallsClick: () -> Unit,
 ) {
     Box(
         contentAlignment = Alignment.Center,
@@ -78,14 +81,28 @@ private fun StartPage(
             }
 
             Button(
+                onClick = onClearWallsClick,
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = Color.Red,
+                    contentColor = Color.White,
+                ),
+            ) {
+                Text("Wyczyść scenę")
+            }
+
+            Button(
                 onClick = onNextClick,
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = Color.Black,
+                    contentColor = Color.White,
+                ),
             ) {
                 Text("Przejdź dalej")
             }
 
             Text("Podgląd:")
 
-            SceneCanvas {
+            SceneCanvas(modifier = Modifier.size(300.dp)) {
                 drawWalls(walls = state.walls)
             }
         }

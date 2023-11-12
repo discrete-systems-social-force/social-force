@@ -10,7 +10,7 @@ import simulation.IEngine
 import simulation.models.Wall
 
 class SimulationViewModel(
-    engine: IEngine,
+    private val engine: IEngine,
     appScope: CoroutineScope,
     walls: List<Wall>,
 ) : ISimulationViewModel {
@@ -25,6 +25,20 @@ class SimulationViewModel(
             walls = engine.walls,
         ),
     )
+
+    override fun changeRunningState() {
+        if (state.value.isRunning) {
+            engine.stop()
+            _state.update {
+                it.copy(isRunning = false)
+            }
+        } else {
+            engine.start()
+            _state.update {
+                it.copy(isRunning = true)
+            }
+        }
+    }
 
     init {
         viewModelScope.launch {

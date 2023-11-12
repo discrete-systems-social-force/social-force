@@ -32,4 +32,10 @@ class StartViewModel(
             }
         }
     }
+
+    fun clearWalls() {
+        mutableState.update {
+            it.copy(walls = emptyList())
+        }
+    }
 }
