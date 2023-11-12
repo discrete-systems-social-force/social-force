@@ -1,30 +1,26 @@
-package rendering
+package ui.simulation
 
-import di.DIModule
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import simulation.IEngine
+import simulation.models.Wall
 
-class ViewModel(
+class SimulationViewModel(
     engine: IEngine,
-    private val changeSceneUseCase: ChangeSceneUseCase,
-) : IViewModel {
-    private val viewModelScope = DIModule.appScope
+    appScope: CoroutineScope,
+    walls: List<Wall>,
+) : ISimulationViewModel {
+    private val viewModelScope = appScope
 
-    override val state: StateFlow<AppState>
+    override val state: StateFlow<SimulationState>
         get() = _state.asStateFlow()
 
-    override fun onNewFile(path: String) {
-        viewModelScope.launch {
-            val newWalls = changeSceneUseCase(path)
-            _state.update {
-                it.copy(walls = newWalls)
-            }
-        }
-    }
-
     private val _state = MutableStateFlow(
-        AppState(
+        SimulationState(
             humans = emptyList(),
             walls = engine.walls,
         ),

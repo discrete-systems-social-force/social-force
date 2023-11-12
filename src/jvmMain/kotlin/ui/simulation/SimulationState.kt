@@ -1,9 +1,9 @@
-package rendering
+package ui.simulation
 
 import simulation.dto.Human
 import simulation.models.Wall
 
-data class AppState(
+data class SimulationState(
     val humans: List<Human>,
     val walls: List<Wall>,
 )

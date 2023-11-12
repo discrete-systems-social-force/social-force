@@ -1,4 +1,4 @@
-package rendering
+package ui
 
 import Utils
 import kotlinx.coroutines.Dispatchers
@@ -9,7 +9,7 @@ import java.awt.image.BufferedImage
 import java.io.File
 import javax.imageio.ImageIO
 
-class ChangeSceneUseCase {
+class GetWallsFromImageUseCase {
 
     suspend operator fun invoke(newFilePath: String): List<Wall> {
         val newWalls = withContext(Dispatchers.IO) {
