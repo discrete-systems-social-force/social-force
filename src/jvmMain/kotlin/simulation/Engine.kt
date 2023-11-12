@@ -55,11 +55,7 @@ class Engine(private val agents: List<Agent>, override val walls: List<Wall>, pr
             val obstacleForce = calculateObstacleForce(agent)
 
             // interaction force
-            // x = (agent1.getAgentRadius() + agent2.getAgentRadius() - distance) * scaleCoefficient
-            // y - calculateMutualAngle
-            // y = normalized atan2(agent2.x - agent1.x, agent2.y - agent1.y)
-            // y >= 0
-            val interactionForce = Vector(0f, 0f)
+            val interactionForce = calculateAgentsInteractionForce(agent)
 
             agent.force = destinationForce.add(obstacleForce).add(interactionForce)
             agent.position = agent.position.add(agent.force)
@@ -77,12 +73,27 @@ class Engine(private val agents: List<Agent>, override val walls: List<Wall>, pr
                 x = distance * cos(angle.toDouble()).toFloat() * coed,
                 y = distance * sin(angle.toDouble()).toFloat() * coed,
             )
-            if (force.x.isFinite() && force.y.isFinite()) {
-                obstacleForce = obstacleForce.add(force)
-            }
+            obstacleForce = obstacleForce.add(force)
         }
         return obstacleForce
     }
 
+    private fun calculateAgentsInteractionForce(agent: Agent): Vector {
+        var interactionForce = Vector(0f, 0f)
+        agents.forEach { otherAgent ->
+            if (agent != otherAgent) {
+                val distance = agent.position.distance(otherAgent.position)
+                val angle = atan2(otherAgent.position.y - agent.position.y, otherAgent.position.x - agent.position.x)
+                val coed = -exp(-distance / 2)
+                val force = Vector(
+                    x = distance * cos(angle.toDouble()).toFloat() * coed,
+                    y = distance * sin(angle.toDouble()).toFloat() * coed,
+                )
+                interactionForce = interactionForce.add(force)
+            }
+        }
+        println(interactionForce)
+        return interactionForce
+    }
 
 }
