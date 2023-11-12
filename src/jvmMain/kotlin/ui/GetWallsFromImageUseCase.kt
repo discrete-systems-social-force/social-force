@@ -29,7 +29,7 @@ class GetWallsFromImageUseCase {
                         val blue = color and 0xff
 
                         if (red == 0 && green == 0 && blue == 0) {
-                            add(Wall(position = Vector(x = x.toFloat(), y = Utils.SCENE_SIZE+1-y.toFloat())))
+                            add(Wall(position = Vector(x = x.toFloat(), y = Utils.SCENE_SIZE + 1 - y.toFloat())))
                         }
                     }
                 }
