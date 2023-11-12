@@ -6,10 +6,10 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.material.Text
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.geometry.Offset
@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.drawscope.scale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
+import com.darkrockstudios.libraries.mpfilepicker.FilePicker
 import di.DIModule
 import kotlinx.coroutines.cancel
 import rendering.AppState
@@ -30,9 +31,28 @@ import simulation.models.Vector
 @Preview
 fun App(
     state: AppState,
+    onNewFile: (String) -> Unit,
 ) {
     MaterialTheme {
         Column {
+            var showFilePicker by remember { mutableStateOf(false) }
+
+            Button(
+                onClick = {
+                    showFilePicker = true
+                },
+            ) {
+                Text(text = "Wybierz plik")
+            }
+
+            val fileType = listOf("bmp")
+            FilePicker(show = showFilePicker, fileExtensions = fileType) { file ->
+                showFilePicker = false
+                file?.path?.let {
+                    onNewFile(file.path)
+                }
+            }
+
             Canvas(modifier = Modifier.fillMaxSize().padding(all = 5.dp).clipToBounds()) {
                 val maxHeight = size.height
                 val maxWidth = size.width
@@ -106,7 +126,12 @@ fun main() {
     application {
         Window(onCloseRequest = ::exitApplication) {
             val state by viewModel.state.collectAsState()
-            App(state = state)
+            App(
+                state = state,
+                onNewFile = {
+                    viewModel.onNewFile(path = it)
+                },
+            )
         }
     }
 

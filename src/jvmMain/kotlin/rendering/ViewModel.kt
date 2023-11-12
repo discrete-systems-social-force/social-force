@@ -1,25 +1,33 @@
 package rendering
 
-import Utils
 import di.DIModule
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import simulation.IEngine
-import simulation.dto.Human
 
 class ViewModel(
-    engine: IEngine
-): IViewModel {
+    engine: IEngine,
+    private val changeSceneUseCase: ChangeSceneUseCase,
+) : IViewModel {
     private val viewModelScope = DIModule.appScope
 
     override val state: StateFlow<AppState>
         get() = _state.asStateFlow()
 
+    override fun onNewFile(path: String) {
+        viewModelScope.launch {
+            val newWalls = changeSceneUseCase(path)
+            _state.update {
+                it.copy(walls = newWalls)
+            }
+        }
+    }
+
     private val _state = MutableStateFlow(
         AppState(
             humans = emptyList(),
             walls = engine.walls,
-        )
+        ),
     )
 
     init {
@@ -27,12 +35,12 @@ class ViewModel(
             engine.start()
             engine.humans()
                 .collect { newHumans ->
-                _state.update {
-                    it.copy(
-                        humans = newHumans,
-                    )
+                    _state.update {
+                        it.copy(
+                            humans = newHumans,
+                        )
+                    }
                 }
-            }
         }
     }
 }

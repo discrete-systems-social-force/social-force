@@ -4,4 +4,6 @@ import kotlinx.coroutines.flow.StateFlow
 
 interface IViewModel {
     val state: StateFlow<AppState>
+
+    fun onNewFile(path: String)
 }

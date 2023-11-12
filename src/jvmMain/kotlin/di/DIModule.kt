@@ -2,6 +2,7 @@ package di
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
+import rendering.ChangeSceneUseCase
 import rendering.IViewModel
 import rendering.ViewModel
 import simulation.Engine
@@ -17,8 +18,11 @@ object DIModule {
     ): IViewModel {
         return ViewModel(
             engine = engine,
+            changeSceneUseCase = provideChangeSceneUseCase(),
         )
     }
+
+    private fun provideChangeSceneUseCase() = ChangeSceneUseCase()
 
     private fun provideEngine(): IEngine {
         val agents = listOf(
