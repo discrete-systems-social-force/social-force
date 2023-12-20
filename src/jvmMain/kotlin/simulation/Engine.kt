@@ -11,9 +11,7 @@ import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.exp
 import kotlin.math.sin
-import kotlin.system.exitProcess
 import kotlin.time.Duration.Companion.milliseconds
-import kotlin.time.Duration.Companion.seconds
 import kotlin.time.ExperimentalTime
 
 class Engine(private val agents: List<Agent>, override val walls: List<Wall>, private val fps: Int = 60) : IEngine {
@@ -59,7 +57,6 @@ class Engine(private val agents: List<Agent>, override val walls: List<Wall>, pr
 
             agent.force = destinationForce.add(obstacleForce).add(interactionForce)
             agent.position = agent.position.add(agent.force)
-
         }
     }
 
@@ -68,7 +65,7 @@ class Engine(private val agents: List<Agent>, override val walls: List<Wall>, pr
         walls.forEach { wall ->
             val distance = wall.position.distance(agent.position)
             val angle = atan2(wall.position.y - agent.position.y, wall.position.x - agent.position.x)
-            val coed = -exp(-distance / 2) / 10
+            val coed = -exp(-distance / 2) / 5
             val force = Vector(
                 x = distance * cos(angle.toDouble()).toFloat() * coed,
                 y = distance * sin(angle.toDouble()).toFloat() * coed,
@@ -95,5 +92,4 @@ class Engine(private val agents: List<Agent>, override val walls: List<Wall>, pr
         println(interactionForce)
         return interactionForce
     }
-
 }

@@ -15,7 +15,7 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.scale
 import androidx.compose.ui.unit.dp
-import simulation.dto.Human
+import simulation.models.Vector
 import simulation.models.Wall
 
 @Composable
@@ -70,7 +70,7 @@ internal fun DrawScope.drawGrid() {
 internal fun DrawScope.drawWalls(walls: List<Wall>) {
     walls.forEach { wall ->
         drawRect(
-            color = Color.Red,
+            color = Color.Black,
             topLeft = Offset(x = wall.position.x, y = SCENE_SIZE - wall.position.y),
             size = Size(
                 width = 1f,
@@ -80,11 +80,9 @@ internal fun DrawScope.drawWalls(walls: List<Wall>) {
     }
 }
 
-internal fun DrawScope.drawHumans(humans: List<Human>) {
+internal fun DrawScope.drawHumans(humans: List<Vector>) {
     val humanPoints = humans.map { human ->
-        human.position.let {
-            Offset(x = it.x, y = it.y)
-        }
+        Offset(x = human.x, y = human.y)
     }
 
     humanPoints.forEach { position ->
@@ -97,4 +95,15 @@ internal fun DrawScope.drawHumans(humans: List<Human>) {
             ),
         )
     }
+}
+
+internal fun DrawScope.drawEndingPoint(endPoint: Vector) {
+    drawRect(
+        topLeft = Offset(x = endPoint.x, y = endPoint.y),
+        color = Color.Red,
+        size = Size(
+            width = 1f,
+            height = 1f,
+        ),
+    )
 }

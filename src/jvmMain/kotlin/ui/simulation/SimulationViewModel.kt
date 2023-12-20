@@ -8,12 +8,11 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import simulation.IEngine
-import simulation.models.Wall
 
 class SimulationViewModel(
     private val engine: IEngine,
     appScope: CoroutineScope,
-    walls: List<Wall>,
+    startingEntry: SimulationStartingEntry,
 ) : ISimulationViewModel {
     private val viewModelScope = appScope
     private val job: Job
@@ -25,6 +24,7 @@ class SimulationViewModel(
         SimulationState(
             humans = emptyList(),
             walls = engine.walls,
+            endingPoint = startingEntry.endingPoint,
         ),
     )
 
