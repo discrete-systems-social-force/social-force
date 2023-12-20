@@ -17,18 +17,28 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import di.di
 import org.kodein.di.instance
+import simulation.models.Vector
 import simulation.models.Wall
 import ui.utils.SceneCanvas
+import ui.utils.drawEndingPoint
 import ui.utils.drawHumans
 import ui.utils.drawWalls
 import java.util.*
 
 data class SimulationScreen(
-    val walls: List<Wall>,
+    private val walls: List<Wall>,
+    private val agentStartPositions: List<Vector>,
+    private val endingPoint: Vector,
     private val uniqueKey: String = UUID.randomUUID().toString(),
 ) : Screen {
 
-    private val viewModel by di.instance<List<Wall>, ISimulationViewModel>(arg = walls)
+    private val viewModel by di.instance<SimulationStartingEntry, ISimulationViewModel>(
+        arg = SimulationStartingEntry(
+            walls = walls,
+            agentStartPositions = agentStartPositions,
+            endingPoint = endingPoint,
+        ),
+    )
 
     @Composable
     override fun Content() {
@@ -43,7 +53,13 @@ data class SimulationScreen(
             },
             onResetClick = {
                 viewModel.dispose()
-                navigator.replace(SimulationScreen(walls = walls))
+                navigator.replace(
+                    SimulationScreen(
+                        walls = walls,
+                        agentStartPositions = agentStartPositions,
+                        endingPoint = endingPoint,
+                    ),
+                )
             },
         )
     }
@@ -108,7 +124,8 @@ private fun SimulationPage(
 
         SceneCanvas {
             drawWalls(walls = state.walls)
-            drawHumans(humans = state.humans)
+            drawHumans(humans = state.humans.map { it.position })
+            drawEndingPoint(endPoint = state.endingPoint)
         }
     }
 }

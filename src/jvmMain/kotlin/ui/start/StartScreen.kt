@@ -14,6 +14,8 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import com.darkrockstudios.libraries.mpfilepicker.FilePicker
 import ui.simulation.SimulationScreen
 import ui.utils.SceneCanvas
+import ui.utils.drawEndingPoint
+import ui.utils.drawHumans
 import ui.utils.drawWalls
 
 class StartScreen : Screen {
@@ -30,7 +32,13 @@ class StartScreen : Screen {
                 viewModel.onNewFile(it)
             },
             onNextClick = {
-                navigator.push(SimulationScreen(walls = state.walls))
+                navigator.push(
+                    SimulationScreen(
+                        walls = state.walls,
+                        agentStartPositions = state.agentPositions,
+                        endingPoint = state.endPoint ?: Utils.DEFAULT_ENDING_POINT,
+                    ),
+                )
             },
             onClearWallsClick = {
                 viewModel.clearWalls()
@@ -104,6 +112,8 @@ private fun StartPage(
 
             SceneCanvas(modifier = Modifier.size(300.dp)) {
                 drawWalls(walls = state.walls)
+                drawHumans(humans = state.agentPositions)
+                state.endPoint?.let { drawEndingPoint(endPoint = it) }
             }
         }
     }
