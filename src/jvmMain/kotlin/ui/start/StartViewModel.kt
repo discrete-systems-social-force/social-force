@@ -14,7 +14,7 @@ class StartViewModel(
         walls = emptyList(),
         isLoading = false,
         agentPositions = emptyList(),
-        endPoint = null,
+        endPoints = emptyList(),
     ),
 ) {
 
@@ -24,12 +24,12 @@ class StartViewModel(
                 it.copy(isLoading = true)
             }
 
-            val (newWalls, newAgentPositions, endPoint) = getWallsFromImageUseCase(path)
+            val (newWalls, newAgentPositions, endPoints) = getWallsFromImageUseCase(path)
             mutableState.update {
                 it.copy(
                     walls = newWalls,
                     agentPositions = newAgentPositions,
-                    endPoint = endPoint,
+                    endPoints = endPoints,
                 )
             }
 

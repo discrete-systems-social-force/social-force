@@ -33,7 +33,9 @@ val appModule = DI.Module("App") {
             val agents = startingEntry.agentStartPositions
                 .map { agentPosition ->
                     Agent().apply {
-                        destination = startingEntry.endingPoint
+                        destination = startingEntry.endingPoints.minBy {
+                            it.distance(agentPosition)
+                        }
                         position = agentPosition
                         speed = 0.5f
                     }

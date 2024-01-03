@@ -36,7 +36,7 @@ class StartScreen : Screen {
                     SimulationScreen(
                         walls = state.walls,
                         agentStartPositions = state.agentPositions,
-                        endingPoint = state.endPoint ?: Utils.DEFAULT_ENDING_POINT,
+                        endingPoints = state.endPoints,
                     ),
                 )
             },
@@ -113,7 +113,9 @@ private fun StartPage(
             SceneCanvas(modifier = Modifier.size(300.dp)) {
                 drawWalls(walls = state.walls)
                 drawHumans(humans = state.agentPositions)
-                state.endPoint?.let { drawEndingPoint(endPoint = it) }
+                state.endPoints.forEach {
+                    drawEndingPoint(endPoint = it)
+                }
             }
         }
     }
