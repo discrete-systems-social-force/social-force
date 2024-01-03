@@ -11,7 +11,7 @@ import javax.imageio.ImageIO
 
 class GetWallsFromImageUseCase {
 
-    suspend operator fun invoke(newFilePath: String): Triple<List<Wall>, List<Vector>, Vector> {
+    suspend operator fun invoke(newFilePath: String): Triple<List<Wall>, List<Vector>, List<Vector>> {
         return withContext(Dispatchers.IO) {
             val file = File(newFilePath)
             val image: BufferedImage = ImageIO.read(file)
@@ -22,7 +22,7 @@ class GetWallsFromImageUseCase {
 
             val newWalls = mutableListOf<Wall>()
             val agentPositions = mutableListOf<Vector>()
-            var endPosition: Vector? = null
+            val endPositions = mutableListOf<Vector>()
 
             for (y in 0 until height) {
                 for (x in 0 until width) {
@@ -41,16 +41,16 @@ class GetWallsFromImageUseCase {
                             ),
                         )
                     } else if (red == 236 && green == 28 && blue == 36) {
-                        endPosition = Vector(x = x.toFloat(), y = y.toFloat())
+                        endPositions.add(Vector(x = x.toFloat(), y = Utils.SCENE_SIZE + 1 - y.toFloat()))
                     } else if (red == 14 && green == 209 && blue == 69) {
                         agentPositions.add(
-                            Vector(x = x.toFloat(), y = y.toFloat()),
+                            Vector(x = x.toFloat(), y = Utils.SCENE_SIZE + 1 - y.toFloat()),
                         )
                     }
                 }
             }
 
-            Triple(newWalls, agentPositions, endPosition ?: Utils.DEFAULT_ENDING_POINT)
+            Triple(newWalls, agentPositions, endPositions)
         }
     }
 }

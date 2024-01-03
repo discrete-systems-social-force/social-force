@@ -24,7 +24,7 @@ class SimulationViewModel(
         SimulationState(
             humans = emptyList(),
             walls = engine.walls,
-            endingPoint = startingEntry.endingPoint,
+            endingPoints = startingEntry.endingPoints,
         ),
     )
 

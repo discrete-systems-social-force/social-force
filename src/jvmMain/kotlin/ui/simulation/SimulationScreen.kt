@@ -28,7 +28,7 @@ import java.util.*
 data class SimulationScreen(
     private val walls: List<Wall>,
     private val agentStartPositions: List<Vector>,
-    private val endingPoint: Vector,
+    private val endingPoints: List<Vector>,
     private val uniqueKey: String = UUID.randomUUID().toString(),
 ) : Screen {
 
@@ -36,7 +36,7 @@ data class SimulationScreen(
         arg = SimulationStartingEntry(
             walls = walls,
             agentStartPositions = agentStartPositions,
-            endingPoint = endingPoint,
+            endingPoints = endingPoints,
         ),
     )
 
@@ -57,7 +57,7 @@ data class SimulationScreen(
                     SimulationScreen(
                         walls = walls,
                         agentStartPositions = agentStartPositions,
-                        endingPoint = endingPoint,
+                        endingPoints = endingPoints,
                     ),
                 )
             },
@@ -125,7 +125,10 @@ private fun SimulationPage(
         SceneCanvas {
             drawWalls(walls = state.walls)
             drawHumans(humans = state.humans.map { it.position })
-            drawEndingPoint(endPoint = state.endingPoint)
+
+            state.endingPoints.forEach {
+                drawEndingPoint(endPoint = it)
+            }
         }
     }
 }

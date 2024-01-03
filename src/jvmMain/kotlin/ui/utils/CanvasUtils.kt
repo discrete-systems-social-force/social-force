@@ -99,7 +99,7 @@ internal fun DrawScope.drawHumans(humans: List<Vector>) {
 
 internal fun DrawScope.drawEndingPoint(endPoint: Vector) {
     drawRect(
-        topLeft = Offset(x = endPoint.x, y = endPoint.y),
+        topLeft = Offset(x = endPoint.x, y = Utils.SCENE_SIZE + 1 - endPoint.y),
         color = Color.Red,
         size = Size(
             width = 1f,
