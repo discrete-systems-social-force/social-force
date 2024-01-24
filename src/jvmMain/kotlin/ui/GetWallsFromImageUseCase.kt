@@ -31,6 +31,7 @@ class GetWallsFromImageUseCase {
                     val green = (color shr 8) and 0xff
                     val blue = color and 0xff
 
+                    println(red.toString() + " " + green.toString() + " " + blue.toString())
                     if (red == 0 && green == 0 && blue == 0) {
                         newWalls.add(
                             Wall(
@@ -40,9 +41,9 @@ class GetWallsFromImageUseCase {
                                 ),
                             ),
                         )
-                    } else if (red == 236 && green == 28 && blue == 36) {
+                    } else if (red == 236 && green == 35 && blue == 36) {
                         endPositions.add(Vector(x = x.toFloat(), y = Utils.SCENE_SIZE + 1 - y.toFloat()))
-                    } else if (red == 14 && green == 209 && blue == 69) {
+                    } else if (red == 13 && green == 209 && blue == 70) {
                         agentPositions.add(
                             Vector(x = x.toFloat(), y = Utils.SCENE_SIZE + 1 - y.toFloat()),
                         )
